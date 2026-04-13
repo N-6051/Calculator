@@ -285,6 +285,7 @@
 
         if (!skip) {
           if (txt === "AC") {
+            val = "";
             inputElm.value = "";
             document.getElementById("result").innerText = ""
           } else if (txt === "⌫") {
@@ -296,6 +297,7 @@
             let exp = inputElm.value;
             exp = exp.replace(/×/g, "*");
             exp = exp.replace(/÷/g, "/");
+            if(!val) val = myCal.evaluate(exp);
             inputElm.value = removeTrailingZeros(val);
           } else {
 
