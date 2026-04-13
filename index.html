@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Calculator</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Google Sans", "Noto Sans", Sans-Serif;
+    }
+
+    #calculator {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(150deg, rgb(7,24,44), rgb(6,15,25));
+      background: #0B141B;
+    }
+
+    #button-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      width: 95vw;
+      gap: 5px;
+      position: absolute;
+      bottom: 5px;
+      left: calc((100% - 95vw) / 2);
+    }
+    #button-container button {
+      padding: 15px;
+      border-radius: 100%;
+      background: rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.3);
+      background: #2D363D;
+      color: #DAE4ED;
+      border: none;
+      outline: none;
+    }
+    #calculator-input {
+      position: relative;
+      border: none;
+      outline: none;
+      width: 100%;
+      height: 80px;
+      background: none;
+      color: rgb(237,245,254);
+      font-size: 56px;
+      text-align: right;
+      caret-color: rgb(64,148,242);
+    }
+    #calculator-input::placeholder {}
+    #calculator-input-div {
+      position: relative;
+      height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 20px;
+    }
+    #result {
+      position: absolute;
+      color: rgb(175,195,251);
+      right: 15px;
+      font-size: 24px;
+      bottom: 15px;
+      transform: scaleY(1.1);
+      transform-origin: top;
+    }
+
+    #button-container button {
+      position: relative;
+      overflow: hidden;
+      /*backdrop-filter: blur(40px);*/
+      user-select: none;
+      font-size: 40px;
+      transition: 0.5s;
+    }
+
+    #button-container button:nth-child(2),
+    #button-container button:nth-child(3),
+    #button-container button:nth-child(4),
+    #button-container button:nth-child(8),
+    #button-container button:nth-child(12),
+    #button-container button:nth-child(16) {
+      background: #334863;
+    }
+
+    #button-container button:nth-child(1) {
+      background: #004D6B;
+    }
+    #button-container button:nth-child(20) {
+      background: #B5C5F9;
+      color: #1F2E59;
+    }
+    #button-container button:hover {
+      background: rgb(61,71,80);
+    }
+    #button-container button:nth-child(20):hover {
+      background: rgb(201,213,250);
+    }
+    #button-container button:nth-child(2):hover,
+    #button-container button:nth-child(3):hover,
+    #button-container button:nth-child(4):hover,
+    #button-container button:nth-child(8):hover,
+    #button-container button:nth-child(12):hover,
+    #button-container button:nth-child(16):hover {
+      background: rgb(66,92,125);
+    }
+    #button-container button:nth-child(1):hover {
+      background: rgb(0,94,130);
+    }
+
+
+
+
+    .riple {
+      background: rgba(255,255,255,0.2);
+      border-radius: 100%;
+      animation: Riple 0.6s;
+      transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+      animation-fill-mode: forwards;
+      pointer-events: none;
+    }
+    @keyframes Riple {
+      100% {
+        transform: scale(15);
+        display: none;
+        opacity: 0;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <section id="calculator">
+    <div class="gradient"></div>
+    <div class="gradient"></div>
+    <div class="gradient"></div>
+    <div id="calculator-input-div">
+      <input type="text" id="calculator-input" inputmode="none" onblur="this.focus()" autofocus="">
+      <div id="result"></div>
+    </div>
+    <div id="button-container">
+      <button>AC</button>
+      <button>( )</button>
+      <button>%</button>
+      <button>÷</button>
+      <button>7</button>
+      <button>8</button>
+      <button>9</button>
+      <button>×</button>
+      <button>4</button>
+      <button>5</button>
+      <button>6</button>
+      <button>-</button>
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+      <button>+</button>
+      <button>0</button>
+      <button>.</button>
+      <button>&#9003;</button>
+      <button>=</button>
+    </div>
+  </section>
+
+  <script src="main.js"></script>
+  <script src="sw.js"></script>
+  <script>
+
+    const resultElm = document.getElementById("result");
+    function createRipple(element) {
+      element.addEventListener("touchstart", e => {
+
+
+
+        let ripple = document.createElement("div");
+        let size = 10;
+        ripple.classList.add("riple");
+        let pos = element.getBoundingClientRect();
+        ripple.setAttribute("style", `
+          width: ${size}px;
+          height: ${size}px;
+          position: absolute;
+          left: ${e.touches[0].clientX - pos.x - size/2}px;
+          top: ${e.touches[0].clientY - pos.y - size/2}px;
+
+          `);
+
+
+        element.appendChild(ripple);
+        setTimeout(() => {
+
+          ripple.remove();
+
+        }, 1000)
+      })
+    }
+
+    function formatCommas(str) {
+      let [i,
+        f = ""] = str.split(".");
+
+      let counter = 1;
+      for (let idx = i.length - 1; idx >= 0; idx--) {
+
+        if (counter == 3 && idx != 0) {
+          i = i.slice(0, idx) + "," + i.slice(idx);
+          counter = 0;
+        }
+
+        counter++;
+
+      }
+
+      return i + (f ? "." + f: "");
+
+    }
+
+
+
+
+
+    let myCal = new Calculator(100);
+
+
+    function AddCommas(text) {
+      let newText = "";
+      let num = "";
+      for (const idx in text) {
+        const char = text[idx];
+        if ("0123456789".includes(char)) {
+          num += char;
+        } else {
+
+          if (num != "") {
+            newText += Number(num).toLocaleString();
+            num = "";
+          }
+
+          newText += char;
+
+        }
+      }
+
+      if (num != "") newText += Number(num).toLocaleString();
+
+      return text;
+    }
+
+    function countChar(char, str) {
+      let count = 0;
+      for (let idx of str) {
+        if (str[idx] === char) count++;
+      }
+      return count;
+    }
+
+    function removeTrailingZeros(str) {
+      return str.replace(/(\.\d*?[1-9])0+$|\.0+$/, "$1");
+    }
+
+
+    const btns = document.querySelectorAll("#button-container button");
+    const inputElm = document.querySelector("#calculator-input");
+    for (const btn of btns) {
+      createRipple(btn)
+      btn.addEventListener("click", e => {
+        e.preventDefault();
+        const [start, end] = [inputElm.selectionStart, inputElm.selectionEnd];
+        let txt = btn.innerText;
+        let skip = false;
+        let lastChar = inputElm.value[inputElm.value.length - 1];
+        skip = txt === lastChar && ![0, 1, 2, 3, 4, 5, 6, 7, 8, 9].includes(parseInt(lastChar));
+        inputElm.value = inputElm.value.replace(/,/g, "");
+
+        if (!skip) {
+          if (txt === "AC") {
+            inputElm.value = "";
+            document.getElementById("result").innerText = ""
+          } else if (txt === "⌫") {
+
+            inputElm.value = AddCommas(inputElm.value.slice(0, start - 1) + inputElm.value.slice(start));
+
+            inputElm.setSelectionRange(start - 1 + countChar(",", inputElm.value) + 1, start - 1 + countChar(",", inputElm.value) + 1);
+          } else if (txt === "=") {
+            let exp = inputElm.value;
+            exp = exp.replace(/×/g, "*");
+            exp = exp.replace(/÷/g, "/");
+            inputElm.value = removeTrailingZeros(val);
+          } else {
+
+
+
+            inputElm.setRangeText(btn.innerText, start, end, 'end');
+            inputElm.value = AddCommas(inputElm.value)
+
+
+          }
+        }
+
+        try {
+          let exp = inputElm.value.replace(/,/g, "");
+          exp = exp.replace(/×/g, "*");
+          exp = exp.replace(/÷/g, "/");
+
+          let result = eval(exp);
+          pos = 0;
+          try {
+            result = myCal.evaluate(exp);
+          } catch {}
+
+          val = removeTrailingZeros(result.toString());
+
+          formatResult()
+          if (result == undefined || result == inputElm.value) document.getElementById("result").innerText = ""
+        } catch {}
+
+
+
+        inputElm.scrollLeft = inputElm.scrollWidth+100;
+
+      })
+    }
+
+    let pos = 0, chunkSize = 16, val = resultElm.textContent, DIGITS_ON_SCREEN = chunkSize + 5;
+    let startX, startY, endX, endY, maxPos;
+    function formatResult() {
+
+      let [i, f = ""] = val.split(".");
+      let str;
+      f ? str = i + "." + f: str = i;
+      maxPos = str.length - chunkSize;
+
+      if (str.length > chunkSize) {
+
+        let chunk = str.slice(pos, pos + chunkSize);
+        let exp = str.length - f.length - 1 - pos;
+
+
+
+        if (pos === 0) {
+          if (i.length < DIGITS_ON_SCREEN && f) {
+            resultElm.textContent = formatCommas(i+"."+f.slice(0, DIGITS_ON_SCREEN - i.length));
+            return;
+          }
+          resultElm.textContent = formatCommas(chunk[0] + "." + chunk.slice(1) + "E" + exp);
+          return;
+        }
+
+        exp -= chunk.length - 1;
+        exp != 0 ? resultElm.textContent = "..." + chunk + "E" + exp: resultElm.textContent = "..." + chunk;
+
+
+      } else {
+        resultElm.textContent = formatCommas(val);
+      }
+
+    }
+
+    formatResult();
+
+
+    resultElm.addEventListener("touchstart", e => {
+      [startX, startY] = [e.touches[0].clientX, e.touches[0].clientY];
+    })
+    resultElm.addEventListener("touchmove", e => {
+      [endX, endY] = [e.touches[0].clientX, e.touches[0].clientY];
+      let dx = endX - startX;
+
+      if (dx > 30) {
+        if (pos > 0) pos -= 1;
+        startX = endX;
+      } else if (dx < -30) {
+        if (pos < maxPos) pos += 1;
+        startX = endX;
+      }
+
+      formatResult()
+    })
+
+  </script>
+</body>
+</html>
