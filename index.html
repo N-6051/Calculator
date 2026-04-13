@@ -172,7 +172,6 @@
   </section>
 
   <script src="main.js"></script>
-  <script src="sw.js"></script>
   <script>
 
     const resultElm = document.getElementById("result");
@@ -386,6 +385,15 @@
       formatResult()
     })
 
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('Service Worker registered!'))
+        .catch(err => console.log('Registration failed:', err));
+      });
+    }                       
   </script>
 </body>
 </html>
