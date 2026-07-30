@@ -332,6 +332,7 @@ button:active {
   overflow-x: scroll;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  margin-left: 24px;
 }
 
 .history-calc-exp {
