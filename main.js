@@ -821,3 +821,15 @@ function handleExportImport() {
     })
 
 }
+
+
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    inputElm.readOnly = true;
+  } else {
+    setTimeout(() => {
+      inputElm.readOnly = false;
+    }, 200)
+  }
+})
