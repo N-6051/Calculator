@@ -345,7 +345,7 @@ function handleRadDeg(elm) {
 
 function displayResult() {
   let exp = inputElm.value;
-  let t = testPercent(exp);
+  let t = testPercent(exp.replace(/,/g, ""));
   if (t) exp = t;
 
   let diff = countChar("(", exp) - countChar(")", exp);
