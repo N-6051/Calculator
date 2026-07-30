@@ -2,6 +2,8 @@ const CACHE_NAME = 'N6051CALCV1';
 const urlsToCache = [
   './',
   './index.html',
+  './main.css',
+  './classes.js',
   './main.js',
   './res/icon-128.png',
   './res/icon-512.png'

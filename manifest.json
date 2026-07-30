@@ -2,7 +2,7 @@
   "lang": "en-us",
   "name": "Calculator",
   "short_name": "Calculator",
-  "description": "An arbitrary precision Calculator",
+  "description": "A high precision Calculator",
   "start_url": "./",
   "background_color": "#020a15",
   "theme_color": "#020a15",
