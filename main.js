@@ -843,4 +843,4 @@ const enterFullscreen = () => {
     });
 };
 
-document.querySelector("#ac-btn).addEventListener("dblclick", enterFullscreen);
+document.querySelector("#ac-btn").addEventListener("dblclick", enterFullscreen);
