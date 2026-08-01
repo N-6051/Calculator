@@ -833,3 +833,14 @@ document.addEventListener("visibilitychange", () => {
     }, 200)
   }
 })
+
+
+
+const enterFullscreen = () => {
+  document.documentElement.requestFullscreen()
+    .catch((err) => {
+      console.error(`Error attempting to enable fullscreen: ${err.message}`);
+    });
+};
+
+document.querySelector("#ac-btn).addEventListener("dblclick", enterFullscreen);
